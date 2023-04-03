@@ -3,13 +3,8 @@ const app=express();
 const bodyParser=require("body-parser");
 const mysql=require("mysql2")
 const cors=require("cors");
+require("dotenv").config();
 
-const db= mysql.createPool({
-    host:process.env.HOST,
-    user:process.env.USER,
-    password:process.env.PASSWORD,
-    database:process.env.DATABASE,
-});
 
 app.get("/",(req,res)=>{
     res.send("hello express")
@@ -18,6 +13,16 @@ app.get("/",(req,res)=>{
 app.use(cors());
 app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}))
+
+const db = mysql.createPool({
+    host:"localhost",
+    user:"root",
+    password:"admin2245",
+    database:"amo",
+}
+);
+
+
 
 app.post('/api/login',(req,res)=>{
     const username=req.body.username;
@@ -143,6 +148,8 @@ app.post('/api/gettransaction',(req,res)=>{
     })
 })
 
-app.listen(process.env.PORT,()=>{
+const port=process.env.PORT || 3001
+
+app.listen(port,()=>{
     console.log(`server is running on port ${port}`)
 })
